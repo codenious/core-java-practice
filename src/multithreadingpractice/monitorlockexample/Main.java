@@ -25,15 +25,25 @@ public class Main {
             Thread producerThread = new Thread(() -> {
                 System.out.println("Producing item in: " + Thread.currentThread().getName());
                 try{
-                    Thread.sleep(10000);
+                    Thread.sleep(5000);
                 } catch(InterruptedException e){
                     throw new RuntimeException(e);
                 }
                 sharedResource.addItem();
             });
 
+            Thread daemonThread = new Thread(() -> {
+                try{
+                    System.out.println("Daemon Thread starts");
+                    Thread.sleep(10000);
+                } catch (InterruptedException e){
+                    throw new RuntimeException(e);
+                }
+            });
+
             producerThread.start();
             consumerThread.start();
+            daemonThread.setDaemon(true);
 
     }
 }
